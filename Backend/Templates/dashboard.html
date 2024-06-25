@@ -1,0 +1,135 @@
+<style>
+  /* General Styles */
+  body {
+    font-family: 'Roboto', sans-serif;
+    background-color: 92DAE3 ;
+    color: #333;
+  }
+  
+  .container {
+    max-width: auto;
+    margin: 10px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    
+  }
+  
+  h2 {
+    color: #008080; /* Teal color for hospital theme */
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  /* Navbar Styles */
+  nav {
+    background-color: #1b9ce1;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  nav ul li {
+    display: inline-block;
+    height: 40px; /* Adjust height as needed */
+    width: auto;
+  }
+  .logo img {
+  height: 40px; /* Adjust height as needed */
+  width: auto; /* Ensures the logo maintains aspect ratio */
+}
+  nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+    border-radius: 4px;
+  }
+  
+  nav ul li a:hover {
+    background-color: #005c5c;
+  }
+  
+  /* User Information Styles */
+  .user-info {
+    margin-bottom: 20px;
+  }
+  
+  .user-info ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .user-info li {
+    margin-bottom: 5px;
+  }
+  
+  /* Button Styles */
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #008080;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn:hover {
+    background-color: #005c5c;
+  }
+</style>
+
+{% extends 'app.html' %} {% block content %}
+<nav>
+<ul>
+  <div class="logo">
+  <li> <img src="{{ url_for('static', filename='images/livertumour.png') }}" alt="Liver Image">
+  </li>
+</div>
+  {% if user %}
+  <li>
+    <a href="/logout" class="btn">Logout</a>
+  </li>
+  {% endif %}
+</ul>
+</nav>
+
+<div class="container">
+<h2>Welcome to the Dashboard</h2>
+{% if user %}
+<div class="user-info">
+  <p>User Information</p>
+  <ul>
+    <li>Name: {{ user[1] }}</li>
+    <li>Email: {{ user[3] }}</li>
+  </ul>
+</div>
+{% endif %}
+<div class="container">
+<h3>Tumor Prediction</h3>
+{% if prediction %}
+  <p>The uploaded image is predicted to be a {{ prediction }} tumor.</p>
+  <img src="{{ url_for('static', filename='uploads/' + filename) }}" alt="Uploaded Image">
+{% else %}
+  <p>Please upload an image to get the prediction.</p>
+{% endif %}
+
+<form method="POST" action="{{ url_for('dashboard') }}" enctype="multipart/form-data">
+  <input type="file" name="file" required>
+  <input type="submit" value="Upload">
+</form>
+</div>
+</div>
+
+{% endblock %}
